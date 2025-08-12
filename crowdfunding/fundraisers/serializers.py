@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.apps import apps
-from fundraisers.models import Fundraiser
-from fundraisers.serializers import FundraiserSerializer
+
 
 
 
