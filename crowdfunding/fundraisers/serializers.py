@@ -7,13 +7,15 @@ from django.apps import apps
 class FundraiserSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
-    
+
     class Meta:
         model = apps.get_model('fundraisers.Fundraiser')
         fields = '__all__'
         
 
 class PledgeSerializer(serializers.ModelSerializer):
+    supporter = serializers.ReadOnlyField(source='supporter.username')
+    
     class Meta:
         model = apps.get_model('fundraisers.Pledge')
         fields = '__all__'
