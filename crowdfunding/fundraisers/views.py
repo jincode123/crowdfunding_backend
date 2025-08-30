@@ -90,6 +90,8 @@ class PledgeList(APIView):
 
 class PledgeDetail(APIView):
 
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
     def put(self, request, pk):
         pledge = self.get_object(pk)
         serializer = PledgeDetailSerializer(
