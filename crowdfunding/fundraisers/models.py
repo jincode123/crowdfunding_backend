@@ -57,7 +57,7 @@ class Pledge(models.Model):
       return f"Pledge {self.amount} to {self.fundraiser}"
    
 
-   # Sponsor = organizations who donate fixed/variable amounts
+# Sponsor = organizations who donate fixed/variable amounts
 class Sponsor(models.Model):
    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
    organization_name = models.CharField(max_length=200)

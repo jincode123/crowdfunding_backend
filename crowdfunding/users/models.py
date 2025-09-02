@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 
-from crowdfunding.fundraisers import models
+from django.db import models
 
 class CustomUser(AbstractUser):
     USER_TYPES = (
