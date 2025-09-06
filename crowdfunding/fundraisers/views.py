@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.http import Http404
-from .models import Fundraiser, Pledge
-from .serializers import FundraiserSerializer, PledgeSerializer, FundraiserDetailSerializer, PledgeDetailSerializer
+from .models import Campaign, Fundraiser, Pledge
+from .serializers import CampaignSerializer, FundraiserSerializer, PledgeSerializer, FundraiserDetailSerializer, PledgeDetailSerializer
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -70,7 +70,7 @@ class PledgeList(APIView):
     
     def get(self, request):
         pledges = Pledge.objects.all()
-        serializer = PledgeSerializer(pledges, many=True)
+        serializer = PledgeSerializer(pledges, many=True, context={'request': request})
         return Response(serializer.data)
     
 
@@ -121,3 +121,24 @@ class PledgeDetail(APIView):
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class CampaignList(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request):
+        campaigns = Campaign.objects.all()
+        serializer = CampaignSerializer(campaigns, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CampaignSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )

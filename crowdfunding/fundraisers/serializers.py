@@ -15,10 +15,22 @@ class FundraiserSerializer(serializers.ModelSerializer):
 
 class PledgeSerializer(serializers.ModelSerializer):
     supporter = serializers.ReadOnlyField(source='supporter.username')
-    
+
     class Meta:
         model = apps.get_model('fundraisers.Pledge')
         fields = '__all__'
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        request = self.context.get('request', None)
+        is_admin = False
+        if request and hasattr(request, 'user') and request.user.is_authenticated:
+            user = request.user
+            is_admin = user.is_staff or user.is_superuser or user.user_type == 'admin'
+        # Hide supporter username if anonymous is True and user is not admin
+        if hasattr(instance, 'anonymous') and getattr(instance, 'anonymous', False) and not is_admin:
+            rep['supporter'] = None  # or 'Anonymous' if you prefer
+        return rep
 
 class FundraiserDetailSerializer(FundraiserSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
@@ -43,3 +55,9 @@ class PledgeDetailSerializer(PledgeSerializer):
         instance.supporter = validated_data.get('supporter', instance.supporter)
         instance.save()
         return instance
+
+class CampaignSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = apps.get_model('fundraisers.Campaign')
+        fields = '__all__'
