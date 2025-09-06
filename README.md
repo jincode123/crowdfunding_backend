@@ -1,12 +1,12 @@
 # Crowdfunding Back End
-{{ your name here }}
+{{ Jinfeng Shan }}
 
 ## Planning:
 ### Concept/Name
-{{ Include a short description of your website concept here. }}
+{{ Crowdfunding through school music production supporting children's mental health }}
 
 ### Intended Audience/User Stories
-{{ Who are your intended audience? How will they use the website? }}
+{{ Individual donors and sponsors, donating through choosing specific music production }}
 
 ### Front End Pages/Functionality
 - Home Page
